@@ -1,6 +1,7 @@
 class TwoStateTwoEvent {
-  constructor(state1, state2, event1, event2)
+  constructor(id, state1, state2, event1, event2)
   {
+    this.id = id;
     this.currentState = state1;
     this.firstState = state1;
     this.secondState = state2;
@@ -9,22 +10,34 @@ class TwoStateTwoEvent {
     {
       this.secondEvent = event2;
     }
-    this.currentState.draw();
   }
 
   changeState()
   {
-
     if(this.currentState === this.secondState && this.secondEvent != undefined && this.firstEvent.twoWay === false)
     {
-      this.currentState = this.secondEvent.transition(this.currentState)
+      this.secondEvent.transition(this);
     }
     else
     {
-      this.currentState = this.firstEvent.transition(this.currentState)
+      this.firstEvent.transition(this);
     }
+  }
 
-    this.currentState.draw();
+  useEvent(event)
+  {
+    if(this.secondEvent === event)
+    {
+      this.secondEvent.transition(this);
+    }
+    else if(this.firstEvent === event)
+    {
+      this.firstEvent.transition(this);
+    }
+    else
+    {
+      console.log("Error: Event not found in FSM");
+    }
   }
 
   update()
